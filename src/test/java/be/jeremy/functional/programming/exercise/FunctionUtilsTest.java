@@ -5,6 +5,7 @@ import org.junit.Test;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.add;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.compose;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.composeWithLambda;
+import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedBiFunction;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedCompose;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedFunc;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.func;
@@ -75,6 +76,13 @@ public class FunctionUtilsTest {
                 .apply(1)
                 .apply(10)
                 .apply(2.5)).isEqualTo("toto, 1, 10, 2.5");
+    }
+
+    @Test
+    public void applyCurriedTupleFunction() {
+        Function<Integer, Function<Double, Double>> f = curriedBiFunction(t -> t._1 * t._2);
+
+        assertThat(f.apply(100).apply(0.20)).isEqualTo(20);
     }
 
 }

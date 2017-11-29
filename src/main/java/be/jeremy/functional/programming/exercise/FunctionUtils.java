@@ -50,10 +50,13 @@ public class FunctionUtils {
         return String.format("%s, %s, %s, %s", a, b, c, d);
     }
 
-    // Implement curried function for the exercise 2.9
+    // Implement curryfunction for the exercise 2.9
     public static <A, B, C, D> Function<A, Function<B, Function<C, Function<D, String>>>> curriedFunc() {
         return a -> b -> c -> d -> String.format("%s, %s, %s, %s", a, b, c ,d);
     }
 
-
+    // Implement curry function of a Tuple for exercise 2.10
+    public static <A, B, C> Function<A, Function<B, C>> curriedBiFunction(Function<Tuple<A, B>, C> f) {
+        return a -> b -> f.apply(new Tuple<>(a, b));
+    }
 }
