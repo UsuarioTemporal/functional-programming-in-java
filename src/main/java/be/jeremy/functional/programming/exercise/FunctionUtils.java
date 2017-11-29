@@ -59,4 +59,8 @@ public class FunctionUtils {
     public static <A, B, C> Function<A, Function<B, C>> curriedBiFunction(Function<Tuple<A, B>, C> f) {
         return a -> b -> f.apply(new Tuple<>(a, b));
     }
+
+    public static <A, B, C> Function<B, Function<A, C>> reverseArgs(Function<A, Function<B, C>> f) {
+        return b -> a-> f.apply(a).apply(b);
+    }
 }

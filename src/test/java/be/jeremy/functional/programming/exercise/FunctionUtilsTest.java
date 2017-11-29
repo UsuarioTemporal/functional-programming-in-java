@@ -11,6 +11,7 @@ import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedFun
 import static be.jeremy.functional.programming.exercise.FunctionUtils.func;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.partialFirst;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.partialSecond;
+import static be.jeremy.functional.programming.exercise.FunctionUtils.reverseArgs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FunctionUtilsTest {
@@ -83,6 +84,12 @@ public class FunctionUtilsTest {
         Function<Integer, Function<Double, Double>> f = curriedBiFunction(t -> t._1 * t._2);
 
         assertThat(f.apply(100).apply(0.20)).isEqualTo(20);
+    }
+
+    @Test
+    public void applyReverseArgs() {
+        Function<Integer, Function<Double, Double>> mult = x -> y -> x * y;
+        assertThat(reverseArgs(mult).apply(0.25).apply(150)).isEqualTo(mult.apply(150).apply(0.25));
     }
 
 }
