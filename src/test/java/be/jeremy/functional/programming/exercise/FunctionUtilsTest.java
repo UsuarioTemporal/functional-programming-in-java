@@ -8,6 +8,7 @@ import static be.jeremy.functional.programming.exercise.FunctionUtils.composeWit
 import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedBiFunction;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedCompose;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.curriedFunc;
+import static be.jeremy.functional.programming.exercise.FunctionUtils.factorial;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.func;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.partialFirst;
 import static be.jeremy.functional.programming.exercise.FunctionUtils.partialSecond;
@@ -90,6 +91,16 @@ public class FunctionUtilsTest {
     public void applyReverseArgs() {
         Function<Integer, Function<Double, Double>> mult = x -> y -> x * y;
         assertThat(reverseArgs(mult).apply(0.25).apply(150)).isEqualTo(mult.apply(150).apply(0.25));
+    }
+
+    @Test
+    public void applyFactorialToZero() {
+        assertThat(factorial().apply(0)).isEqualTo(1);
+    }
+
+    @Test
+    public void applyFactorialToNonZeroValue() {
+        assertThat(factorial().apply(5)).isEqualTo(120);
     }
 
 }

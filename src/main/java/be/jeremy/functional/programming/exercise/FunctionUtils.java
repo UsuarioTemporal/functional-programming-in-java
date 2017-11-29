@@ -60,7 +60,13 @@ public class FunctionUtils {
         return a -> b -> f.apply(new Tuple<>(a, b));
     }
 
+    // Implement a function that reverse the args order for exercise 2.11
     public static <A, B, C> Function<B, Function<A, C>> reverseArgs(Function<A, Function<B, C>> f) {
         return b -> a-> f.apply(a).apply(b);
+    }
+
+    // Implement a function that compute factorial for exercise 2.12
+    public static Function<Integer, Integer> factorial() {
+        return n -> n == 0 ? 1 : n * factorial().apply(n - 1);
     }
 }
