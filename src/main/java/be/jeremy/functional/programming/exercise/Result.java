@@ -3,20 +3,43 @@ package be.jeremy.functional.programming.exercise;
 /**
  * @author Jeremy
  */
-public interface Result {
+public interface Result<T> {
 
-    public class Success implements Result {}
+    void bind(Effect<T> success, Effect<T> failure);
 
-    public class Failure implements Result {
+    public static <T> Result<T> success(T value) {
+        return new Success(value);
+    }
 
-        private final String errorMessage;
+    public static <T> Result<T> failure(T value) {
+        return new Failure(value);
+    }
 
-        public Failure(String s) {
-            this.errorMessage = s;
+    class Success<T> implements Result<T> {
+        private T value;
+
+        private Success(T value) {
+            this.value =value;
         }
 
-        public String getMessage() {
-            return errorMessage;
+        @Override
+        public void bind(Effect<T> success, Effect<T> failure) {
+            success.apply(value);
+        }
+
+    }
+
+    class Failure<T> implements Result<T> {
+
+        private final T value;
+
+        private Failure(T value) {
+            this.value = value;
+        }
+
+        @Override
+        public void bind(Effect<T> success, Effect<T> failure) {
+            failure.apply(value);
         }
     }
 }
