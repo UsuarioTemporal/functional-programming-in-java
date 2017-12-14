@@ -24,4 +24,21 @@ public class ListUtilities {
     public static <T> List<T> list(T... values) {
         return asList(values);
     }
+
+    public static <T> T head(List<T> ts) {
+        if (ts.isEmpty()) {
+            throw new IllegalArgumentException("List must not be empty !");
+        }
+        return ts.get(0);
+    }
+
+    public static <T> List<T> tail(List<T> ts) {
+        if (ts.isEmpty()) {
+            throw new IllegalArgumentException("List must not be empty !");
+        }
+        List<T> tail = new ArrayList<>(ts);
+        tail.remove(0);
+
+        return unmodifiableList(tail);
+    }
 }
