@@ -12,6 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListUtilitiesTest {
 
+    private static Function<Integer, Function<String, String>> addIS = x -> y -> "(" + x + " + " + y + ")";
+    private static Function<String, Function<Integer, String>> addSI = x -> y -> "(" + x + " + " + y + ")";
+    private static Function<Integer, Function<Integer, Integer>> add = x -> y -> x + y;
+
     @Test(expected = UnsupportedOperationException.class)
     public void emptyList() {
         List<Integer> l = list();
@@ -65,5 +69,43 @@ public class ListUtilitiesTest {
     @Test(expected = IllegalArgumentException.class)
     public void tail_whenEmptyList() {
         ListUtilities.tail(Collections.emptyList());
+    }
+
+    @Test
+    public void fold() {
+        assertThat(ListUtilities.fold(ListUtilities.list(10, 15, 25), 0, add)).isEqualTo(50);
+    }
+    @Test
+    public void fold_whenEmpty() {
+        assertThat(ListUtilities.fold(ListUtilities.list(), 0, add)).isEqualTo(0);
+    }
+
+    @Test
+    public void foldLeft() {
+        assertThat(ListUtilities.foldLeft(ListUtilities.list(10, 15, 25), "0", addSI)).isEqualTo("(((0 + 10) + 15) + 25)");
+    }
+    @Test
+    public void foldLeft_whenEmpty() {
+        assertThat(ListUtilities.foldLeft(ListUtilities.list(), "0", addSI)).isEqualTo("0");
+    }
+
+    @Test
+    public void imperativeFoldRight() {
+        assertThat(ListUtilities.imperativeFoldRight(ListUtilities.list(10, 15, 25), "0", addIS)).isEqualTo("(10 + (15 + (25 + 0)))");
+    }
+
+    @Test
+    public void imperativeFoldRight_whenEmptyList() {
+        assertThat(ListUtilities.imperativeFoldRight(ListUtilities.list(), "0", addIS)).isEqualTo("0");
+    }
+
+    @Test
+    public void foldRight() {
+        assertThat(ListUtilities.foldRight(ListUtilities.list(10, 15, 25), "0", addIS)).isEqualTo("(10 + (15 + (25 + 0)))");
+    }
+
+    @Test
+    public void foldRight_whenEmptyList() {
+        assertThat(ListUtilities.foldRight(ListUtilities.list(), "0", addIS)).isEqualTo("0");
     }
 }

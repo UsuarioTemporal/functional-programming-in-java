@@ -41,4 +41,36 @@ public class ListUtilities {
 
         return unmodifiableList(tail);
     }
+
+    public static Integer fold(List<Integer> l, Integer startValue, Function<Integer, Function<Integer, Integer>> f) {
+        if (l.isEmpty()) {
+            return startValue;
+        }
+        return fold(tail(l), f.apply(startValue).apply(head(l)), f);
+    }
+
+    public static <T> T foldLeft(List<Integer> l, T startValue, Function<T, Function<Integer, T>> f) {
+        if (l.isEmpty()) {
+            return startValue;
+        }
+        return foldLeft(tail(l), f.apply(startValue).apply(head(l)), f);
+    }
+
+    public static <T> T imperativeFoldRight(List<Integer> l, T startValue, Function<Integer, Function<T, T>> f) {
+        Function<T, T> g = x -> x;
+        for (Integer i : l) {
+            Function<T, T> finalG = g;
+            g = x -> finalG.apply(f.apply(i).apply(x));
+        }
+
+        return g.apply(startValue);
+    }
+
+    public static <T> T foldRight(List<Integer> l, T startValue, Function<Integer, Function<T, T>> f) {
+        if (l.isEmpty()) {
+            return startValue;
+        }
+
+        return f.apply(head(l)).apply(foldRight(tail(l), startValue, f));
+    }
 }
