@@ -111,13 +111,13 @@ public class ListUtilitiesTest {
 
     @Test
     public void prepend() {
-        assertThat(ListUtilities.prepend().apply(list(3, 4, 5)).apply(2))
+        assertThat(ListUtilities.prepend(list(3, 4, 5), 2))
                 .hasSize(4).containsSequence(2, 3, 4, 5);
     }
 
     @Test
     public void prepend_whenEmptyList() {
-        assertThat(ListUtilities.prepend().apply(list()).apply(2)).hasSize(1).containsSequence(2);
+        assertThat(ListUtilities.prepend(list(), 2)).hasSize(1).containsSequence(2);
     }
 
     @Test
@@ -128,5 +128,15 @@ public class ListUtilitiesTest {
     @Test
     public void reverse_whenEmptyList() {
         assertThat(ListUtilities.reverse().apply(list())).isEmpty();
+    }
+
+    @Test
+    public void mapFoldLeft() {
+        assertThat(ListUtilities.mapFoldLeft(list(2, 3, 5), x -> 2 * x)).hasSize(3).containsSequence(4, 6, 10);
+    }
+
+    @Test
+    public void mapFoldRight() {
+        assertThat(ListUtilities.mapFoldRight(list(2, 3, 5), x -> 2 * x)).hasSize(3).containsSequence(4, 6, 10);
     }
 }

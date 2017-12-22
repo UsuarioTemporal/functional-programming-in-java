@@ -66,7 +66,7 @@ public class ListUtilities {
         return g.apply(startValue);
     }
 
-    public static <T> T foldRight(List<Integer> l, T startValue, Function<Integer, Function<T, T>> f) {
+    public static <T, U> U foldRight(List<T> l, U startValue, Function<T, Function<U, U>> f) {
         if (l.isEmpty()) {
             return startValue;
         }
@@ -74,20 +74,26 @@ public class ListUtilities {
         return f.apply(head(l)).apply(foldRight(tail(l), startValue, f));
     }
 
-    public static <T> Function<List<T>, Function<T, List<T>>> append() {
-        return l -> elem -> {
-            List<T> newList = new ArrayList<>(l);
-            newList.add(elem);
+    public static <T> List<T> append(List<T> l, T elem) {
+        List<T> newList = new ArrayList<>(l);
+        newList.add(elem);
 
-            return unmodifiableList(newList);
-        };
+        return unmodifiableList(newList);
     }
 
-    public static <T> Function<List<T>, Function<T, List<T>>> prepend() {
-        return l -> elem -> foldLeft(l, list(elem), append());
+    public static <T> List<T> prepend(List<T> l, T elem) {
+        return foldLeft(l, list(elem), nl -> e -> append(nl, e));
     }
 
     public static <T> Function<List<T>, List<T>> reverse() {
-        return l -> foldLeft(l, ListUtilities.list(), prepend());
+        return l -> foldLeft(l, ListUtilities.list(), nl -> e -> prepend(nl, e));
+    }
+
+    public static <T, U> List<U> mapFoldLeft(List<T> l, Function<T, U> f) {
+        return foldLeft(l, list(), nl -> e -> append(nl, f.apply(e)));
+    }
+
+    public static <T, U> List<U> mapFoldRight(List<T> l, Function<T, U> f) {
+        return foldRight(l, list(), e -> nl -> prepend(nl, f.apply(e)));
     }
 }
