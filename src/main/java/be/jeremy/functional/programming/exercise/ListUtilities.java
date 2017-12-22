@@ -49,7 +49,7 @@ public class ListUtilities {
         return fold(tail(l), f.apply(startValue).apply(head(l)), f);
     }
 
-    public static <T> T foldLeft(List<Integer> l, T startValue, Function<T, Function<Integer, T>> f) {
+    public static <T, U> U foldLeft(List<T> l, U startValue, Function<U, Function<T, U>> f) {
         if (l.isEmpty()) {
             return startValue;
         }
@@ -72,5 +72,22 @@ public class ListUtilities {
         }
 
         return f.apply(head(l)).apply(foldRight(tail(l), startValue, f));
+    }
+
+    public static <T> Function<List<T>, Function<T, List<T>>> append() {
+        return l -> elem -> {
+            List<T> newList = new ArrayList<>(l);
+            newList.add(elem);
+
+            return unmodifiableList(newList);
+        };
+    }
+
+    public static <T> Function<List<T>, Function<T, List<T>>> prepend() {
+        return l -> elem -> foldLeft(l, list(elem), append());
+    }
+
+    public static <T> Function<List<T>, List<T>> reverse() {
+        return l -> foldLeft(l, ListUtilities.list(), prepend());
     }
 }

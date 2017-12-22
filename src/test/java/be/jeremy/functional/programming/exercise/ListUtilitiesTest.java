@@ -108,4 +108,25 @@ public class ListUtilitiesTest {
     public void foldRight_whenEmptyList() {
         assertThat(ListUtilities.foldRight(ListUtilities.list(), "0", addIS)).isEqualTo("0");
     }
+
+    @Test
+    public void prepend() {
+        assertThat(ListUtilities.prepend().apply(list(3, 4, 5)).apply(2))
+                .hasSize(4).containsSequence(2, 3, 4, 5);
+    }
+
+    @Test
+    public void prepend_whenEmptyList() {
+        assertThat(ListUtilities.prepend().apply(list()).apply(2)).hasSize(1).containsSequence(2);
+    }
+
+    @Test
+    public void reverse() {
+        assertThat(ListUtilities.reverse().apply(list(2, 3, 4))).hasSize(3).containsSequence(4, 3, 2);
+    }
+
+    @Test
+    public void reverse_whenEmptyList() {
+        assertThat(ListUtilities.reverse().apply(list())).isEmpty();
+    }
 }
