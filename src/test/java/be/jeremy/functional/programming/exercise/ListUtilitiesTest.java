@@ -144,4 +144,16 @@ public class ListUtilitiesTest {
     public void range() {
         assertThat(ListUtilities.range(1, 5)).containsSequence(1, 2, 3, 4);
     }
+
+    @Test
+    public void unfold() {
+        assertThat(ListUtilities.unfold(1, x -> x + 1, x -> x < 5)).containsSequence(1, 2, 3, 4);
+    }
+
+    @Test
+    public void rangeUnfold() {
+        assertThat(ListUtilities.range(1, 5)).containsSequence(1, 2, 3, 4);
+    }
+
+
 }

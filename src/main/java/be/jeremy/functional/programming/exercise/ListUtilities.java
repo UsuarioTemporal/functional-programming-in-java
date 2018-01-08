@@ -108,4 +108,22 @@ public class ListUtilities {
 
         return result;
     }
+
+    public static <T> List<T> unfold(T seed, Function<T, T> f, Function<T, Boolean> p) {
+        List<T> result = emptyList();
+
+        T temp = seed;
+
+        while(p.apply(temp)) {
+            result = append(result, temp);
+
+            temp = f.apply(temp);
+        }
+
+        return result;
+    }
+
+    public static List<Integer> rangeUnfold(int start, int end) {
+        return unfold(start, x -> x + 1, x -> x < end);
+    }
 }
