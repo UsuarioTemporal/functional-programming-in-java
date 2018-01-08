@@ -139,4 +139,9 @@ public class ListUtilitiesTest {
     public void mapFoldRight() {
         assertThat(ListUtilities.mapFoldRight(list(2, 3, 5), x -> 2 * x)).hasSize(3).containsSequence(4, 6, 10);
     }
+
+    @Test
+    public void range() {
+        assertThat(ListUtilities.range(1, 5)).containsSequence(1, 2, 3, 4);
+    }
 }

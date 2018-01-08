@@ -96,4 +96,16 @@ public class ListUtilities {
     public static <T, U> List<U> mapFoldRight(List<T> l, Function<T, U> f) {
         return foldRight(l, list(), e -> nl -> prepend(nl, f.apply(e)));
     }
+
+    public static List<Integer> range(int start, int end) {
+        List<Integer> result = new ArrayList<>();
+        int temp = start;
+
+        while (temp < end) {
+            result = append(result, temp);
+            ++temp;
+        }
+
+        return result;
+    }
 }
