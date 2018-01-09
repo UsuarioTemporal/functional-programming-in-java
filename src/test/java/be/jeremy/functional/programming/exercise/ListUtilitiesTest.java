@@ -152,7 +152,12 @@ public class ListUtilitiesTest {
 
     @Test
     public void rangeUnfold() {
-        assertThat(ListUtilities.range(1, 5)).containsSequence(1, 2, 3, 4);
+        assertThat(ListUtilities.rangeUnfold(1, 5)).containsSequence(1, 2, 3, 4);
+    }
+
+    @Test
+    public void recursiveRange() {
+        assertThat(ListUtilities.recursiveRange(1, 5)).containsSequence(1, 2, 3, 4);
     }
 
 

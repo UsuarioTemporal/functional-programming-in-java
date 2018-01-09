@@ -126,4 +126,11 @@ public class ListUtilities {
     public static List<Integer> rangeUnfold(int start, int end) {
         return unfold(start, x -> x + 1, x -> x < end);
     }
+
+    public static List<Integer> recursiveRange(int start, int end) {
+        if (start >= end) {
+            return list();
+        }
+        return prepend(recursiveRange(start + 1, end), start);
+    }
 }
