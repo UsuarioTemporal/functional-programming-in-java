@@ -90,6 +90,15 @@ public class ListUtilitiesTest {
     }
 
     @Test
+    public void stackSafeFoldLeft() {
+        assertThat(ListUtilities.stackSafeFoldLeft(ListUtilities.list(10, 15, 25), "0", addSI)).isEqualTo("(((0 + 10) + 15) + 25)");
+    }
+    @Test
+    public void stackSafeFoldLeft_whenEmpty() {
+        assertThat(ListUtilities.stackSafeFoldLeft(ListUtilities.list(), "0", addSI)).isEqualTo("0");
+    }
+
+    @Test
     public void imperativeFoldRight() {
         assertThat(ListUtilities.imperativeFoldRight(ListUtilities.list(10, 15, 25), "0", addIS)).isEqualTo("(10 + (15 + (25 + 0)))");
     }

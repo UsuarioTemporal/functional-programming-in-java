@@ -3,6 +3,8 @@ package be.jeremy.functional.programming.exercise;
 import java.util.ArrayList;
 import java.util.List;
 
+import static be.jeremy.functional.programming.exercise.TailCall.ret;
+import static be.jeremy.functional.programming.exercise.TailCall.sus;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 
@@ -54,6 +56,20 @@ public class ListUtilities {
             return startValue;
         }
         return foldLeft(tail(l), f.apply(startValue).apply(head(l)), f);
+    }
+
+    public static <T, U> U stackSafeFoldLeft(List<T> l, U startValue, Function<U, Function<T, U>> f) {
+        if (l.isEmpty()) {
+            return startValue;
+        }
+        return foldLeft(tail(l), f.apply(startValue).apply(head(l)), f);
+    }
+
+    private static <T, U> TailCall<U> _stackSafeFoldLeft(List<T> l, U startValue, Function<U, Function<T, U>> f) {
+        if (l.isEmpty()) {
+            return ret(startValue);
+        }
+        return sus(() -> _stackSafeFoldLeft(tail(l), f.apply(startValue).apply(head(l)), f));
     }
 
     public static <T> T imperativeFoldRight(List<Integer> l, T startValue, Function<Integer, Function<T, T>> f) {
