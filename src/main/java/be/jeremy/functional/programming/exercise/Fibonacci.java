@@ -1,5 +1,7 @@
 package be.jeremy.functional.programming.exercise;
 
+import static be.jeremy.functional.programming.exercise.TailCall.ret;
+
 /**
  * @author Jeremy
  */
@@ -45,6 +47,18 @@ public class Fibonacci {
             return acc2;
         }
         return _tailCallRecursive(i - 1, acc2, acc1 + acc2);
+    }
+
+    public static Integer stackSafeRecursive(int i) {
+        return _stackSafeRecursive(i, 0, 1).eval();
+    }
+
+    private static TailCall<Integer> _stackSafeRecursive(int i, Integer acc1, Integer acc2) {
+        if (i == 0) return ret(0);
+        if (i == 1) {
+            return ret(acc2);
+        }
+        return TailCall.sus(() -> _stackSafeRecursive(i - 1, acc2, acc1 + acc2));
     }
 
 }
