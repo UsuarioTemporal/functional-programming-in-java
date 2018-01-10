@@ -149,4 +149,26 @@ public class ListUtilities {
         }
         return prepend(recursiveRange(start + 1, end), start);
     }
+
+    public static List<Integer> tailCallRange(int start, int end) {
+        return _tailCallRange(start, end, list());
+    }
+
+    private static List<Integer> _tailCallRange(int start, int end, List<Integer> acc) {
+        if (start >= end) {
+            return acc;
+        }
+        return _tailCallRange(start + 1, end, append(acc, start));
+    }
+
+    public static List<Integer> stackSafeRange(int start, int end) {
+        return _stackSafeRange(start, end, list()).eval();
+    }
+
+    private static TailCall<List<Integer>> _stackSafeRange(int start, int end, List<Integer> acc) {
+        if (start >= end) {
+            return ret(acc);
+        }
+        return sus(() -> _stackSafeRange(start + 1, end, append(acc, start)));
+    }
 }

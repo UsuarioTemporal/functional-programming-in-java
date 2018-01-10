@@ -169,5 +169,15 @@ public class ListUtilitiesTest {
         assertThat(ListUtilities.recursiveRange(1, 5)).containsSequence(1, 2, 3, 4);
     }
 
+    @Test
+    public void tailCallRange() {
+        assertThat(ListUtilities.tailCallRange(1, 5)).containsSequence(1, 2, 3, 4);
+    }
+
+    @Test
+    public void stackSafeRange() {
+        assertThat(ListUtilities.stackSafeRange(1, 5)).containsSequence(1, 2, 3, 4);
+    }
+
 
 }
