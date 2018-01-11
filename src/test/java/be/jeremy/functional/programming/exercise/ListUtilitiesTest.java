@@ -189,5 +189,13 @@ public class ListUtilitiesTest {
         assertThat(ListUtilities.stackSafeRange(1, 5)).containsSequence(1, 2, 3, 4);
     }
 
+    @Test
+    public void composeAll() {
+        Function<Integer, Integer> twice = x -> x * 2;
+        Function<Integer, Integer> plusThree = x -> x + 3;
+        Function<Integer, Integer> triple = x -> x * 3;
+
+        assertThat(ListUtilities.composeAll(ListUtilities.list(twice, plusThree, triple)).apply(5)).isEqualTo(36);
+    }
 
 }

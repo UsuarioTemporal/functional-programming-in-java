@@ -182,4 +182,8 @@ public class ListUtilities {
         }
         return sus(() -> _stackSafeRange(start + 1, end, append(acc, start)));
     }
+
+    public static <T> Function<T, T> composeAll(List<Function<T, T>> fs) {
+        return foldRight(fs, t -> t, f1 -> f2 -> t -> f1.apply(f2.apply(t)));
+    }
 }
