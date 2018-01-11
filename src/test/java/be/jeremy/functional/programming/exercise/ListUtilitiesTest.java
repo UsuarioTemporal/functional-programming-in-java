@@ -119,6 +119,16 @@ public class ListUtilitiesTest {
     }
 
     @Test
+    public void stackSafeFoldRight() {
+        assertThat(ListUtilities.stackSafeFoldRight(ListUtilities.list(10, 15, 25), "0", addIS)).isEqualTo("(10 + (15 + (25 + 0)))");
+    }
+
+    @Test
+    public void stackSafeFoldRight_whenEmptyList() {
+        assertThat(ListUtilities.stackSafeFoldRight(ListUtilities.list(), "0", addIS)).isEqualTo("0");
+    }
+
+    @Test
     public void prepend() {
         assertThat(ListUtilities.prepend(list(3, 4, 5), 2))
                 .hasSize(4).containsSequence(2, 3, 4, 5);

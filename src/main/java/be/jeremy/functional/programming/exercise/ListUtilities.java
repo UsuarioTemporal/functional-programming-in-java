@@ -90,6 +90,17 @@ public class ListUtilities {
         return f.apply(head(l)).apply(foldRight(tail(l), startValue, f));
     }
 
+    public static <T, U> U stackSafeFoldRight(List<T> l, U startValue, Function<T, Function<U, U>> f) {
+        return _stackSafeFoldRight(l, startValue, f, list()).eval();
+    }
+
+    private static <T, U> TailCall<U> _stackSafeFoldRight(List<T> l, U startValue, Function<T, Function<U, U>> f, List<T> acc) {
+        if (l.isEmpty()) {
+            return ret(stackSafeFoldLeft(acc, startValue, u -> t -> f.apply(t).apply(u)));
+        }
+        return sus(() -> _stackSafeFoldRight(tail(l), startValue, f, prepend(acc, head(l))));
+    }
+
     public static <T> List<T> append(List<T> l, T elem) {
         List<T> newList = new ArrayList<>(l);
         newList.add(elem);
