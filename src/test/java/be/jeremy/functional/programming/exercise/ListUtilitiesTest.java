@@ -8,6 +8,7 @@ import java.util.List;
 
 import static be.jeremy.functional.programming.exercise.ListUtilities.list;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ListUtilitiesTest {
@@ -15,6 +16,9 @@ public class ListUtilitiesTest {
     private static Function<Integer, Function<String, String>> addIS = x -> y -> "(" + x + " + " + y + ")";
     private static Function<String, Function<Integer, String>> addSI = x -> y -> "(" + x + " + " + y + ")";
     private static Function<Integer, Function<Integer, Integer>> add = x -> y -> x + y;
+    private Function<Integer, Integer> twice = x -> x * 2;
+    private Function<Integer, Integer> plusThree = x -> x + 3;
+    private Function<Integer, Integer> triple = x -> x * 3;
 
     @Test(expected = UnsupportedOperationException.class)
     public void emptyList() {
@@ -75,6 +79,7 @@ public class ListUtilitiesTest {
     public void fold() {
         assertThat(ListUtilities.fold(ListUtilities.list(10, 15, 25), 0, add)).isEqualTo(50);
     }
+
     @Test
     public void fold_whenEmpty() {
         assertThat(ListUtilities.fold(ListUtilities.list(), 0, add)).isEqualTo(0);
@@ -84,6 +89,7 @@ public class ListUtilitiesTest {
     public void foldLeft() {
         assertThat(ListUtilities.foldLeft(ListUtilities.list(10, 15, 25), "0", addSI)).isEqualTo("(((0 + 10) + 15) + 25)");
     }
+
     @Test
     public void foldLeft_whenEmpty() {
         assertThat(ListUtilities.foldLeft(ListUtilities.list(), "0", addSI)).isEqualTo("0");
@@ -93,6 +99,7 @@ public class ListUtilitiesTest {
     public void stackSafeFoldLeft() {
         assertThat(ListUtilities.stackSafeFoldLeft(ListUtilities.list(10, 15, 25), "0", addSI)).isEqualTo("(((0 + 10) + 15) + 25)");
     }
+
     @Test
     public void stackSafeFoldLeft_whenEmpty() {
         assertThat(ListUtilities.stackSafeFoldLeft(ListUtilities.list(), "0", addSI)).isEqualTo("0");
@@ -191,11 +198,22 @@ public class ListUtilitiesTest {
 
     @Test
     public void composeAll() {
-        Function<Integer, Integer> twice = x -> x * 2;
-        Function<Integer, Integer> plusThree = x -> x + 3;
-        Function<Integer, Integer> triple = x -> x * 3;
-
         assertThat(ListUtilities.composeAll(ListUtilities.list(twice, plusThree, triple)).apply(5)).isEqualTo(36);
+    }
+
+    @Test
+    public void composeAllWithFoldRight() {
+        assertThat(ListUtilities.composeAllWithFoldRight(ListUtilities.list(twice, plusThree, triple)).apply(5)).isEqualTo(36);
+    }
+
+    @Test
+    public void composeAllWithFoldLeft() {
+        assertThat(ListUtilities.composeAllWithFoldLeft(ListUtilities.list(twice, plusThree, triple)).apply(5)).isEqualTo(36);
+    }
+
+    @Test
+    public void rev() {
+        assertThat(ListUtilities.reverse(ListUtilities.list(1, 2, 3, 4))).containsSequence(4, 3, 2, 1);
     }
 
 }

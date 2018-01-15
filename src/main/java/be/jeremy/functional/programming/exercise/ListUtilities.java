@@ -141,7 +141,7 @@ public class ListUtilities {
 
         T temp = seed;
 
-        while(p.apply(temp)) {
+        while (p.apply(temp)) {
             result = append(result, temp);
 
             temp = f.apply(temp);
@@ -186,4 +186,17 @@ public class ListUtilities {
     public static <T> Function<T, T> composeAll(List<Function<T, T>> fs) {
         return foldRight(fs, t -> t, f1 -> f2 -> t -> f1.apply(f2.apply(t)));
     }
+
+    public static <T> Function<T, T> composeAllWithFoldRight(List<Function<T, T>> fs) {
+        return x -> foldRight(fs, x, a -> a::apply);
+    }
+
+    public static <T> Function<T, T> composeAllWithFoldLeft(List<Function<T, T>> fs) {
+        return x -> foldLeft(reverse(fs), x, a -> b -> b.apply(a));
+    }
+
+    public static <T> List<T> reverse(List<T> l) {
+        return foldRight(l, list(), e -> ls -> append(ls, e));
+    }
+
 }
