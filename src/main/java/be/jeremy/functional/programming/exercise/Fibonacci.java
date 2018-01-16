@@ -1,6 +1,17 @@
 package be.jeremy.functional.programming.exercise;
 
+import java.util.List;
+
+import static be.jeremy.functional.programming.exercise.ListUtilities.append;
+import static be.jeremy.functional.programming.exercise.ListUtilities.foldLeft;
+import static be.jeremy.functional.programming.exercise.ListUtilities.head;
+import static be.jeremy.functional.programming.exercise.ListUtilities.list;
+import static be.jeremy.functional.programming.exercise.ListUtilities.mapFoldLeft;
+import static be.jeremy.functional.programming.exercise.ListUtilities.range;
+import static be.jeremy.functional.programming.exercise.ListUtilities.tail;
 import static be.jeremy.functional.programming.exercise.TailCall.ret;
+import static be.jeremy.functional.programming.exercise.TailCall.sus;
+import static sun.plugin.cache.FileVersion.convertToString;
 
 /**
  * @author Jeremy
@@ -59,6 +70,32 @@ public class Fibonacci {
             return ret(acc2);
         }
         return TailCall.sus(() -> _stackSafeRecursive(i - 1, acc2, acc1 + acc2));
+    }
+
+    public static String sequences(int i) {
+        List<Integer> seq = _sequences(i, 0, 1, list(0)).eval();
+        
+        return convertToString(seq);
+    }
+
+    private static <T> String convertToString(List<T> l) {
+        if (l.isEmpty()) {
+            return "";
+        }
+        if (tail(l).isEmpty()) {
+            return head(l).toString();
+        }
+        return head(l) + foldLeft(tail(l), "", x -> y -> x + ", " + y);
+    }
+
+    private static TailCall<List<Integer>> _sequences(int i, Integer acc1, Integer acc2, List<Integer> acc) {
+        if (i == 0) {
+            return ret(acc);
+        } else if (i == 1) {
+            return ret(append(acc, acc2));
+        } else {
+            return sus(() -> _sequences(i - 1, acc2, acc1 + acc2, append(acc, acc2)));
+        }
     }
 
 }

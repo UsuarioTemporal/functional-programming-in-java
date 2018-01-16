@@ -36,4 +36,11 @@ public class FibonacciTest {
         assertThat(Fibonacci.stackSafeRecursive(1)).isEqualTo(1);
         assertThat(Fibonacci.stackSafeRecursive(6)).isEqualTo(8);
     }
+
+    @Test
+    public void sequences() {
+        assertThat(Fibonacci.sequences(0)).isEqualTo("0");
+        assertThat(Fibonacci.sequences(5)).isEqualTo("0, 1, 1, 2, 3, 5");
+    }
+
 }
