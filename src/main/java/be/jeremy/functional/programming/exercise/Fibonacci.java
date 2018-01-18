@@ -6,12 +6,9 @@ import static be.jeremy.functional.programming.exercise.ListUtilities.append;
 import static be.jeremy.functional.programming.exercise.ListUtilities.foldLeft;
 import static be.jeremy.functional.programming.exercise.ListUtilities.head;
 import static be.jeremy.functional.programming.exercise.ListUtilities.list;
-import static be.jeremy.functional.programming.exercise.ListUtilities.mapFoldLeft;
-import static be.jeremy.functional.programming.exercise.ListUtilities.range;
 import static be.jeremy.functional.programming.exercise.ListUtilities.tail;
 import static be.jeremy.functional.programming.exercise.TailCall.ret;
 import static be.jeremy.functional.programming.exercise.TailCall.sus;
-import static sun.plugin.cache.FileVersion.convertToString;
 
 /**
  * @author Jeremy
