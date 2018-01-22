@@ -40,6 +40,13 @@ public abstract class List<T> {
         return new Cons<>(t, this);
     }
 
+    public List<T> drop(int i) {
+        if (i == 0) {
+            return this;
+        }
+        return tail().drop(i - 1);
+    }
+
     private static class Nil<T> extends List<T> {
 
         private Nil() {}
@@ -67,6 +74,11 @@ public abstract class List<T> {
         @Override
         public String toString() {
             return "[NIL]";
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
         }
     }
 
@@ -103,6 +115,14 @@ public abstract class List<T> {
         @Override
         public String toString() {
             return String.format("[%sNIL]", toString(new StringBuilder(), this).eval());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof List) {
+                return this.head().equals(((List) obj).head()) && this.tail().equals(((List) obj).tail());
+            }
+            return false;
         }
 
         private TailCall<String> toString(StringBuilder builder, List<T> l) {
