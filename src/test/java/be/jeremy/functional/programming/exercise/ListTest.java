@@ -17,6 +17,7 @@ public class ListTest {
 
     @Test
     public void drop() {
+        assertThat(List.list().drop(2)).isEqualTo(List.list());
         assertThat(List.list(1,2,3, 4).drop(0)).isEqualTo(List.list(1, 2, 3, 4));
         assertThat(List.list(1,2,3, 4).drop(2)).isEqualTo(List.list(3, 4));
     }

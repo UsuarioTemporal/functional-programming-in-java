@@ -12,6 +12,7 @@ public abstract class List<T> {
     public abstract List<T> tail();
     public abstract Boolean isEmpty();
     public abstract List<T> setHead(T t);
+    public abstract List<T> drop(int i);
 
     private List() {}
 
@@ -40,13 +41,6 @@ public abstract class List<T> {
         return new Cons<>(t, this);
     }
 
-    public List<T> drop(int i) {
-        if (i == 0) {
-            return this;
-        }
-        return tail().drop(i - 1);
-    }
-
     private static class Nil<T> extends List<T> {
 
         private Nil() {}
@@ -69,6 +63,11 @@ public abstract class List<T> {
         @Override
         public List<T> setHead(T t) {
             throw new IllegalStateException("setHead called on empty list");
+        }
+
+        @Override
+        public List<T> drop(int i) {
+            return this;
         }
 
         @Override
@@ -110,6 +109,14 @@ public abstract class List<T> {
         @Override
         public List<T> setHead(T t) {
             return new Cons<>(t, this.tail);
+        }
+
+        @Override
+        public List<T> drop(int i) {
+            if (i <= 0) {
+                return this;
+            }
+            return tail().drop(i - 1);
         }
 
         @Override
