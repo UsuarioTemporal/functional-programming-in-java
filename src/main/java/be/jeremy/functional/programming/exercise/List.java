@@ -9,12 +9,32 @@ import static be.jeremy.functional.programming.exercise.TailCall.sus;
 public abstract class List<T> {
 
     public abstract T head();
+
     public abstract List<T> tail();
+
     public abstract Boolean isEmpty();
+
     public abstract List<T> setHead(T t);
+
     public abstract List<T> drop(int i);
 
-    private List() {}
+    public abstract List<T> dropWhile(Function<T, Boolean> p);
+
+    public abstract List<T> init();
+
+    public List<T> reverse() {
+        return _reverse(list());
+    }
+
+    private List<T> _reverse(List<T> acc) {
+        if (isEmpty()) {
+            return acc;
+        }
+        return tail()._reverse(acc.cons(head()));
+    }
+
+    private List() {
+    }
 
     public static final List NIL = new Nil();
 
@@ -38,12 +58,13 @@ public abstract class List<T> {
     }
 
     public List<T> cons(T t) {
-        return new Cons<>(t, this);
+        return new Cons<T>(t, this);
     }
 
     private static class Nil<T> extends List<T> {
 
-        private Nil() {}
+        private Nil() {
+        }
 
         @Override
         public T head() {
@@ -67,6 +88,16 @@ public abstract class List<T> {
 
         @Override
         public List<T> drop(int i) {
+            return this;
+        }
+
+        @Override
+        public List<T> dropWhile(Function<T, Boolean> p) {
+            return this;
+        }
+
+        @Override
+        public List<T> init() {
             return this;
         }
 
@@ -120,14 +151,27 @@ public abstract class List<T> {
         }
 
         @Override
+        public List<T> dropWhile(Function<T, Boolean> p) {
+            if (p.apply(head())) {
+                return tail().dropWhile(p);
+            }
+            return this;
+        }
+
+        @Override
+        public List<T> init() {
+            return reverse().tail().reverse();
+        }
+
+        @Override
         public String toString() {
             return String.format("[%sNIL]", toString(new StringBuilder(), this).eval());
         }
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof List) {
-                return this.head().equals(((List) obj).head()) && this.tail().equals(((List) obj).tail());
+            if (obj instanceof Cons) {
+                return head.equals(((Cons) obj).head) && tail.equals(((Cons) obj).tail);
             }
             return false;
         }
@@ -139,5 +183,5 @@ public abstract class List<T> {
                 return sus(() -> toString(builder.append(l.head()).append(", "), l.tail()));
             }
         }
-     }
+    }
 }
