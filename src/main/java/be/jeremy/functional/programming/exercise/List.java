@@ -57,6 +57,24 @@ public abstract class List<T> {
         return list.setHead(t);
     }
 
+    public static Integer sum(List<Integer> l) {
+        return l.isEmpty()
+                ? 0
+                : l.head() + sum(l.tail());
+    }
+
+    public static Double product(List<Double> l) {
+        return l.isEmpty()
+                ? 1.0
+                : l.head() * product(l.tail());
+    }
+
+    public static <S, T> T foldRight(List<S> l, T identity, Function<S, Function<T, T>> op) {
+        return l.isEmpty()
+                ? identity
+                : op.apply(l.head()).apply(foldRight(l.tail(), identity, op));
+    }
+
     public List<T> cons(T t) {
         return new Cons<T>(t, this);
     }

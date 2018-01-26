@@ -41,4 +41,25 @@ public class ListTest {
         assertThat(List.list().init()).isEqualTo(List.list());
         assertThat(List.list(1, 2, 3, 4).init()).isEqualTo(List.list(1, 2, 3));
     }
+
+    @Test
+    public void sum() {
+        assertThat(List.sum(List.list())).isEqualTo(0);
+        assertThat(List.sum(List.list(1, 2, 3, 4))).isEqualTo(10);
+    }
+
+    @Test
+    public void product() {
+        assertThat(List.product(List.list())).isEqualTo(1.0);
+        assertThat(List.product(List.list(1.0, 2.0, 3.0, 4.0))).isEqualTo(24);
+    }
+
+    @Test
+    public void foldRight() {
+        assertThat(List.foldRight(List.<Integer>list(), 0, x -> y -> x + y)).isEqualTo(0);
+        assertThat(List.foldRight(List.list(1, 2, 3, 4), 0, x -> y -> x + y)).isEqualTo(10);
+
+        assertThat(List.foldRight(List.<Double>list(), 1.0, x -> y -> x * y)).isEqualTo(1.0);
+        assertThat(List.foldRight(List.list(1.0, 2.0, 3.0, 4.0), 1.0, x -> y -> x * y)).isEqualTo(24);
+    }
 }
