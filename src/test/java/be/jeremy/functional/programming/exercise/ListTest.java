@@ -49,6 +49,12 @@ public class ListTest {
     }
 
     @Test
+    public void stackSafeSum() {
+        assertThat(List.stackSafeSum(List.list())).isEqualTo(0);
+        assertThat(List.stackSafeSum(List.list(1, 2, 3, 4))).isEqualTo(10);
+    }
+
+    @Test
     public void product() {
         assertThat(List.product(List.list())).isEqualTo(1.0);
         assertThat(List.product(List.list(1.0, 2.0, 3.0, 4.0))).isEqualTo(24);
@@ -61,5 +67,23 @@ public class ListTest {
 
         assertThat(List.foldRight(List.<Double>list(), 1.0, x -> y -> x * y)).isEqualTo(1.0);
         assertThat(List.foldRight(List.list(1.0, 2.0, 3.0, 4.0), 1.0, x -> y -> x * y)).isEqualTo(24);
+    }
+
+    @Test
+    public void length() {
+        assertThat(List.length(List.list())).isEqualTo(0);
+        assertThat(List.length(List.list(1, 2, 3, 4))).isEqualTo(4);
+    }
+
+    @Test
+    public void stackSafeLength() {
+        assertThat(List.stackSafeLength(List.list())).isEqualTo(0);
+        assertThat(List.stackSafeLength(List.list(1, 2, 3, 4))).isEqualTo(4);
+    }
+
+    @Test
+    public void foldLeft() {
+        assertThat(List.list(10, 15, 25).foldLeft("0", x -> y -> "(" + x + " + " + y + ")"))
+                .isEqualTo("(((0 + 10) + 15) + 25)");
     }
 }

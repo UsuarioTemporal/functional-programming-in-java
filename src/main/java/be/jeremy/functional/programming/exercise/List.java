@@ -22,6 +22,8 @@ public abstract class List<T> {
 
     public abstract List<T> init();
 
+    public abstract <S> S foldLeft(S identity, Function<S, Function<T, S>> f);
+
     public List<T> reverse() {
         return _reverse(list());
     }
@@ -63,6 +65,10 @@ public abstract class List<T> {
                 : l.head() + sum(l.tail());
     }
 
+    public static Integer stackSafeSum(List<Integer> l) {
+        return l.foldLeft(0, x -> y -> x + y);
+    }
+
     public static Double product(List<Double> l) {
         return l.isEmpty()
                 ? 1.0
@@ -73,6 +79,14 @@ public abstract class List<T> {
         return l.isEmpty()
                 ? identity
                 : op.apply(l.head()).apply(foldRight(l.tail(), identity, op));
+    }
+
+    public static Integer length(List<?> l) {
+        return foldRight(l, 0, y -> x -> x + 1);
+    }
+
+    public static Integer stackSafeLength(List<?> l) {
+        return l.foldLeft(0, x -> y -> x + 1);
     }
 
     public List<T> cons(T t) {
@@ -117,6 +131,11 @@ public abstract class List<T> {
         @Override
         public List<T> init() {
             return this;
+        }
+
+        @Override
+        public <S> S foldLeft(S identity, Function<S, Function<T, S>> f) {
+            return identity;
         }
 
         @Override
@@ -179,6 +198,11 @@ public abstract class List<T> {
         @Override
         public List<T> init() {
             return reverse().tail().reverse();
+        }
+
+        @Override
+        public <S> S foldLeft(S identity, Function<S, Function<T, S>> f) {
+            return tail.foldLeft(f.apply(identity).apply(head), f);
         }
 
         @Override
