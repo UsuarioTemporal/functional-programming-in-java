@@ -89,8 +89,19 @@ public abstract class List<T> {
         return l.foldLeft(0, x -> y -> x + 1);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <S, T> T foldRightViaFoldLeft(List<S> l, T identity, Function<S, Function<T, T>> op) {
+        return ((List<S>) l
+                .foldLeft(list(), ls -> ls::cons))
+                .foldLeft(identity, t -> s -> op.apply(s).apply(t));
+    }
+
+    public static List<?> reverseViaFoldLeft(List<?> l) {
+        return l.foldLeft(list(), ls -> ls::cons);
+    }
+
     public List<T> cons(T t) {
-        return new Cons<T>(t, this);
+        return new Cons<>(t, this);
     }
 
     private static class Nil<T> extends List<T> {
