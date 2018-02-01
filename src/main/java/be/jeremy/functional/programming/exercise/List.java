@@ -111,6 +111,10 @@ public abstract class List<T> {
         return sus(() -> _tailCallFoldLeft(f.apply(l.head()).apply(acc), acc, l.tail(), f));
     }
 
+    public static <T> List<T> concat(List<T> l1, List<T> l2) {
+        return l1.reverse().foldLeft(l2, l -> l::cons);
+    }
+
     public List<T> cons(T t) {
         return new Cons<>(t, this);
     }

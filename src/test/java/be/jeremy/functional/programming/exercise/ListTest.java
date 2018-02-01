@@ -110,4 +110,12 @@ public class ListTest {
         assertThat(List.list(10, 15, 25).foldLeft("0", x -> y -> "(" + x + " + " + y + ")"))
                 .isEqualTo("(((0 + 10) + 15) + 25)");
     }
+
+    @Test
+    public void concat() {
+        assertThat(List.concat(List.list(), List.list())).isEqualTo(List.list());
+        assertThat(List.concat(List.list(1, 2, 3), List.list())).isEqualTo(List.list(1, 2, 3));
+        assertThat(List.concat(List.list(), List.list(1, 2, 3))).isEqualTo(List.list(1, 2, 3));
+        assertThat(List.concat(List.list(1, 2, 3), List.list(4, 5, 6))).isEqualTo(List.list(1, 2, 3, 4, 5, 6));
+    }
 }
