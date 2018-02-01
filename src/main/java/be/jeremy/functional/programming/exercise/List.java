@@ -100,6 +100,17 @@ public abstract class List<T> {
         return l.foldLeft(list(), ls -> ls::cons);
     }
 
+    public static <S, T> T tailCallFoldRight(List<S> l, T identity, Function<S, Function<T, T>> f) {
+        return _tailCallFoldLeft(identity, identity, l.reverse(), f).eval();
+    }
+
+    private static <S, T> TailCall<T> _tailCallFoldLeft(T acc, T identity, List<S> l, Function<S, Function<T, T>> f) {
+        if (l.isEmpty()) {
+            return ret(acc);
+        }
+        return sus(() -> _tailCallFoldLeft(f.apply(l.head()).apply(acc), acc, l.tail(), f));
+    }
+
     public List<T> cons(T t) {
         return new Cons<>(t, this);
     }

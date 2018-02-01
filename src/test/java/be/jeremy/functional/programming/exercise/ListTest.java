@@ -85,6 +85,15 @@ public class ListTest {
     }
 
     @Test
+    public void tailCallFoldRight() {
+        assertThat(List.tailCallFoldRight(List.<Integer>list(), 0, x -> y -> x + y)).isEqualTo(0);
+        assertThat(List.tailCallFoldRight(List.list(1, 2, 3, 4), 0, x -> y -> x + y)).isEqualTo(10);
+
+        assertThat(List.tailCallFoldRight(List.<Double>list(), 1.0, x -> y -> x * y)).isEqualTo(1.0);
+        assertThat(List.tailCallFoldRight(List.list(1.0, 2.0, 3.0, 4.0), 1.0, x -> y -> x * y)).isEqualTo(24);
+    }
+
+    @Test
     public void length() {
         assertThat(List.length(List.list())).isEqualTo(0);
         assertThat(List.length(List.list(1, 2, 3, 4))).isEqualTo(4);
