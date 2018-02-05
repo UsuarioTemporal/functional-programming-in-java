@@ -118,4 +118,24 @@ public class ListTest {
         assertThat(List.concat(List.list(), List.list(1, 2, 3))).isEqualTo(List.list(1, 2, 3));
         assertThat(List.concat(List.list(1, 2, 3), List.list(4, 5, 6))).isEqualTo(List.list(1, 2, 3, 4, 5, 6));
     }
+
+    @Test
+    public void flatten() {
+        assertThat(List.flatten(List.list())).isEqualTo(List.list());
+        assertThat(List.flatten(List.list(List.list(1, 2, 3)))).isEqualTo(List.list(1, 2, 3));
+        assertThat(List.flatten(List.list(List.list(1, 2, 3), List.list(4, 5, 6), List.list(), List.list(7, 8))))
+                .isEqualTo(List.list(1, 2, 3, 4, 5, 6, 7, 8));
+    }
+
+    @Test
+    public void threeTimes() {
+        assertThat(List.threeTimes(List.list())).isEqualTo(List.list());
+        assertThat(List.threeTimes(List.list(1, 2, 3))).isEqualTo(List.list(3, 6, 9));
+    }
+
+    @Test
+    public void doubleToString() {
+        assertThat(List.doubleToString(List.list())).isEqualTo(List.list());
+        assertThat(List.doubleToString(List.list(1.0, 2.0, 3.0))).isEqualTo(List.list("1.0", "2.0", "3.0"));
+    }
 }

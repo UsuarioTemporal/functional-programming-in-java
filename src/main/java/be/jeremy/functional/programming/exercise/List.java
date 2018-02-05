@@ -115,6 +115,18 @@ public abstract class List<T> {
         return l1.reverse().foldLeft(l2, l -> l::cons);
     }
 
+    public static <T> List<T> flatten(List<List<T>> l) {
+        return l.foldLeft(List.list(), l1 -> l2 -> concat(l1, l2));
+    }
+
+    public static List<Integer> threeTimes(List<Integer> l) {
+        return foldRight(l, List.list(), el -> nl -> nl.cons(el * 3));
+    }
+
+    public static List<String>doubleToString(List<Double> l) {
+        return foldRight(l, List.list(), el -> nl -> nl.cons(el.toString()));
+    }
+
     public List<T> cons(T t) {
         return new Cons<>(t, this);
     }
