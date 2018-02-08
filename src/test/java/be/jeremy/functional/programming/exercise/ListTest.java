@@ -138,4 +138,28 @@ public class ListTest {
         assertThat(List.doubleToString(List.list())).isEqualTo(List.list());
         assertThat(List.doubleToString(List.list(1.0, 2.0, 3.0))).isEqualTo(List.list("1.0", "2.0", "3.0"));
     }
+
+    @Test
+    public void map() {
+        assertThat(List.<Integer>list().map(x -> x * 3)).isEqualTo(List.list());
+        assertThat(List.list(1, 2, 3).map(x -> x * 3)).isEqualTo(List.list(3, 6, 9));
+    }
+
+    @Test
+    public void filter() {
+        assertThat(List.<Integer>list().filter(x -> x % 2 == 0)).isEqualTo(List.list());
+        assertThat(List.list(1, 2, 3, 4, 5, 6).filter(x -> x % 2 == 0)).isEqualTo(List.list(2, 4, 6));
+    }
+
+    @Test
+    public void filterViaFlatmap() {
+        assertThat(List.filterViaFlatmap(List.<Integer>list(), x -> x % 2 == 0)).isEqualTo(List.list());
+        assertThat(List.filterViaFlatmap(List.list(1, 2, 3, 4, 5, 6), x -> x % 2 == 0)).isEqualTo(List.list(2, 4, 6));
+    }
+
+    @Test
+    public void flatmap() {
+        assertThat(List.<Integer>list().flatMap(x -> List.list(x, -x))).isEqualTo(List.list());
+        assertThat(List.list(1, 2, 3).flatMap(x -> List.list(x, -x))).isEqualTo(List.list(1, -1, 2, -2, 3, -3));
+    }
 }

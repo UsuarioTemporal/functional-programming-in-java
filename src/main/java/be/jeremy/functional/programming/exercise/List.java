@@ -24,6 +24,7 @@ public abstract class List<T> {
 
     public abstract <S> S foldLeft(S identity, Function<S, Function<T, S>> f);
 
+
     public List<T> reverse() {
         return _reverse(list());
     }
@@ -33,6 +34,18 @@ public abstract class List<T> {
             return acc;
         }
         return tail()._reverse(acc.cons(head()));
+    }
+
+    public <S> List<S> map(Function<T, S> f) {
+        return foldRight(this, list(), el -> ls -> new Cons<>(f.apply(el), ls));
+    }
+
+    public List<T> filter(Function<T, Boolean> p) {
+        return foldRight(this, list(), el -> ls -> p.apply(el) ? new Cons(el, ls) : ls);
+    }
+
+    public <S> List<S> flatMap(Function<T, List<S>> f) {
+        return foldRight(this, list(), el -> ls -> foldRight(f.apply(el), ls, el2 -> ls2 -> new Cons(el2, ls2)));
     }
 
     private List() {
@@ -123,8 +136,12 @@ public abstract class List<T> {
         return foldRight(l, List.list(), el -> nl -> nl.cons(el * 3));
     }
 
-    public static List<String>doubleToString(List<Double> l) {
+    public static List<String> doubleToString(List<Double> l) {
         return foldRight(l, List.list(), el -> nl -> nl.cons(el.toString()));
+    }
+
+    public static <T> List<T> filterViaFlatmap(List<T> l, Function<T, Boolean> p) {
+        return l.flatMap(x -> p.apply(x) ? List.list(x) : List.list());
     }
 
     public List<T> cons(T t) {
