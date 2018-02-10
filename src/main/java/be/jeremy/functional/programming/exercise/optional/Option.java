@@ -1,5 +1,6 @@
 package be.jeremy.functional.programming.exercise.optional;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -10,6 +11,7 @@ public abstract class Option<T> {
     public abstract T getOrThrow();
     public abstract T getOrElse(T defaultValue);
     public abstract T getOrElse(Supplier<T> defaultValueSupplier);
+    public abstract <S> Option<S> map(Function<T, S> f);
 
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
@@ -31,6 +33,11 @@ public abstract class Option<T> {
         @Override
         public T getOrElse(Supplier<T> defaultValueSupplier) {
             return defaultValueSupplier.get();
+        }
+
+        @Override
+        public <S> Option<S> map(Function<T, S> f) {
+            return none;
         }
 
         @Override
@@ -60,6 +67,19 @@ public abstract class Option<T> {
         @Override
         public T getOrElse(Supplier<T> defaultValueSupplier) {
             return value;
+        }
+
+        @Override
+        public <S> Option<S> map(Function<T, S> f) {
+            return some(f.apply(value));
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            if (that instanceof Some) {
+                return this.value.equals(((Some) that).value);
+            }
+            return this == that;
         }
 
         @Override
