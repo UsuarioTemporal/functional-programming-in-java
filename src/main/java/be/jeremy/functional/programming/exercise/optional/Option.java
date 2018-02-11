@@ -13,6 +13,18 @@ public abstract class Option<T> {
     public abstract T getOrElse(Supplier<T> defaultValueSupplier);
     public abstract <S> Option<S> map(Function<T, S> f);
 
+    public <S> Option<S> flatMap(Function<T, Option<S>> f) {
+        return map(f).getOrElse(none());
+    }
+
+    public Option<T> orElse(Supplier<Option<T>> defaultValue) {
+        return map(x -> this).getOrElse(defaultValue);
+    }
+
+    public Option<T> filter(Function<T, Boolean> p) {
+        return flatMap(x -> p.apply(x) ? this : none());
+    }
+
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
 
