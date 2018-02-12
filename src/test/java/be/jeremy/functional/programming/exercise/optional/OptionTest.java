@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.function.Function;
 
 import static be.jeremy.functional.programming.exercise.List.length;
+import static be.jeremy.functional.programming.exercise.optional.Option.lift;
 import static be.jeremy.functional.programming.exercise.optional.Option.none;
 import static be.jeremy.functional.programming.exercise.optional.Option.some;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,4 +32,9 @@ public class OptionTest {
         assertThat(some(10).filter(i -> i % 2 == 0)).isEqualTo(some(10));
     }
 
+    @Test
+    public void testLift() {
+        Function<Option<Double>, Option<Double>> oAbs = Option.lift(Math::abs);
+        assertThat(oAbs.apply(some(-1.0))).isEqualTo(some(1.0));
+    }
 }

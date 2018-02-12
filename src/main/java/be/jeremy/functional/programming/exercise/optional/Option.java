@@ -25,6 +25,10 @@ public abstract class Option<T> {
         return flatMap(x -> p.apply(x) ? this : none());
     }
 
+    public static <S, T> Function<Option<S>, Option<T>> lift(Function<S, T> f) {
+        return o -> o.map(f);
+    }
+
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
 
