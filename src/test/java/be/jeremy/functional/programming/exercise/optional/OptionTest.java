@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.function.Function;
 
+import static be.jeremy.functional.programming.exercise.List.length;
 import static be.jeremy.functional.programming.exercise.optional.Option.none;
 import static be.jeremy.functional.programming.exercise.optional.Option.some;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,16 +25,10 @@ public class OptionTest {
     }
 
     @Test
-    public  void testFilter() {
+    public void testFilter() {
         assertThat(Option.<Integer>none().filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(5).filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(10).filter(i -> i % 2 == 0)).isEqualTo(some(10));
     }
 
-    @Test
-    public void testVariance() {
-        Function<List<Double>, Option<Double>> sum = l -> l.foldLeft(none(), o -> d -> o.map(x -> x + d));
-//        Function<List<Double>, Option<Double>> mean = l -> List.length();
-//        Function<List<Double>, Option<Double>> variance =
-    }
 }
