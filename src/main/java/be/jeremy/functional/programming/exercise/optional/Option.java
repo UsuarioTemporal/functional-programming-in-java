@@ -9,8 +9,11 @@ import java.util.function.Supplier;
 public abstract class Option<T> {
 
     public abstract T getOrThrow();
+
     public abstract T getOrElse(T defaultValue);
+
     public abstract T getOrElse(Supplier<T> defaultValueSupplier);
+
     public abstract <S> Option<S> map(Function<T, S> f);
 
     public <S> Option<S> flatMap(Function<T, Option<S>> f) {
@@ -29,12 +32,23 @@ public abstract class Option<T> {
         return o -> o.map(f);
     }
 
+    public static <S, T> Function<Option<S>, Option<T>> liftWhenThrow(Function<S, T> f) {
+        return o -> {
+            try {
+                return o.map(f);
+            } catch (Exception e) {
+                return none();
+            }
+        };
+    }
+
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
 
     private static class None<T> extends Option<T> {
 
-        private None() {}
+        private None() {
+        }
 
         @Override
         public T getOrThrow() {
@@ -102,6 +116,7 @@ public abstract class Option<T> {
         public String toString() {
             return String.format("Some(%s)", value);
         }
+
     }
 
     public static <T> Option<T> some(T value) {

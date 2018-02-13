@@ -30,11 +30,17 @@ public class OptionTest {
         assertThat(Option.<Integer>none().filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(5).filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(10).filter(i -> i % 2 == 0)).isEqualTo(some(10));
+        throw new NumberFormatException();
     }
 
     @Test
     public void testLift() {
-        Function<Option<Double>, Option<Double>> oAbs = Option.lift(Math::abs);
-        assertThat(oAbs.apply(some(-1.0))).isEqualTo(some(1.0));
+        assertThat(Option.<Double, Double>lift(Math::abs).apply(some(-1.0))).isEqualTo(some(1.0));
+    }
+
+    @Test
+    public void testLiftWhenThrow() {
+        assertThat(Option.<Double, Double>liftWhenThrow(Math::abs).apply(some(-1.0))).isEqualTo(some(1.0));
+        assertThat(Option.<Double, Double>liftWhenThrow(d -> {throw new RuntimeException();}).apply(some(1.0))).isEqualTo(none());
     }
 }
