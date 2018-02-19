@@ -6,6 +6,7 @@ import static be.jeremy.functional.programming.exercise.List.list;
 import static be.jeremy.functional.programming.exercise.optional.Option.none;
 import static be.jeremy.functional.programming.exercise.optional.Option.sequence;
 import static be.jeremy.functional.programming.exercise.optional.Option.some;
+import static be.jeremy.functional.programming.exercise.optional.Option.traverse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OptionTest {
@@ -48,5 +49,12 @@ public class OptionTest {
         assertThat(sequence(list())).isEqualTo(some(list()));
         assertThat(sequence(list(some(10), some(11), none(), some(12)))).isEqualTo(none());
         assertThat(sequence(list(some(10), some(11), some(12)))).isEqualTo(some(list(10, 11, 12)));
+    }
+
+    @Test
+    public void testTraverse() {
+        assertThat(traverse(list(), Option::some)).isEqualTo(some(list()));
+        assertThat(traverse(list(1, 2, 3, 4), Option::some)).isEqualTo(some(list(1, 2, 3, 4)));
+        assertThat(traverse(list(1, 2, 3, 4), x -> x % 2 == 0 ? some(x): none())).isEqualTo(none());
     }
 }
