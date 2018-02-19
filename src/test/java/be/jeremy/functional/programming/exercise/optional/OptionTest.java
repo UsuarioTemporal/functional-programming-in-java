@@ -1,13 +1,10 @@
 package be.jeremy.functional.programming.exercise.optional;
 
-import be.jeremy.functional.programming.exercise.List;
 import org.junit.Test;
 
-import java.util.function.Function;
-
-import static be.jeremy.functional.programming.exercise.List.length;
-import static be.jeremy.functional.programming.exercise.optional.Option.lift;
+import static be.jeremy.functional.programming.exercise.List.list;
 import static be.jeremy.functional.programming.exercise.optional.Option.none;
+import static be.jeremy.functional.programming.exercise.optional.Option.sequence;
 import static be.jeremy.functional.programming.exercise.optional.Option.some;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,6 +38,15 @@ public class OptionTest {
     @Test
     public void testLiftWhenThrow() {
         assertThat(Option.<Double, Double>liftWhenThrow(Math::abs).apply(some(-1.0))).isEqualTo(some(1.0));
-        assertThat(Option.<Double, Double>liftWhenThrow(d -> {throw new RuntimeException();}).apply(some(1.0))).isEqualTo(none());
+        assertThat(Option.<Double, Double>liftWhenThrow(d -> {
+            throw new RuntimeException();
+        }).apply(some(1.0))).isEqualTo(none());
+    }
+
+    @Test
+    public void testSequence() {
+        assertThat(sequence(list())).isEqualTo(some(list()));
+        assertThat(sequence(list(some(10), some(11), none(), some(12)))).isEqualTo(none());
+        assertThat(sequence(list(some(10), some(11), some(12)))).isEqualTo(some(list(10, 11, 12)));
     }
 }

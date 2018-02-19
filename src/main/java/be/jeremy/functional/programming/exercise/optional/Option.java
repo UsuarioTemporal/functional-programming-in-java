@@ -1,7 +1,11 @@
 package be.jeremy.functional.programming.exercise.optional;
 
+import be.jeremy.functional.programming.exercise.List;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static be.jeremy.functional.programming.exercise.List.list;
 
 /**
  * @author Jeremy
@@ -41,6 +45,15 @@ public abstract class Option<T> {
             }
         };
     }
+
+    public static <S, T, U> Option<U> map2(Option<S> s, Option<T> t, Function<S, Function<T, U>> f) {
+        return s.flatMap(sx -> t.map(tx -> f.apply(sx).apply(tx)));
+    }
+
+    public static <T> Option<List<T>> sequence(List<Option<T>> l) {
+        return List.foldRight(l, some(list()), x -> y -> map2(x, y, a -> b -> b.cons(a)));
+    }
+
 
     @SuppressWarnings("rawtypes")
     private static Option none = new None();
