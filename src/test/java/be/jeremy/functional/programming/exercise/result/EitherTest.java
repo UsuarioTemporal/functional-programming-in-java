@@ -19,4 +19,16 @@ public class EitherTest {
         assertThat(left("fault").flatMap(e -> right("10"))).isEqualTo(left("fault"));
         assertThat(right(10L).flatMap(e -> right("10"))).isEqualTo(right("10"));
     }
+
+    @Test
+    public void getOrElse() {
+        assertThat(left("fault").getOrElse(() -> "default")).isEqualTo("default");
+        assertThat(right("10").getOrElse(() -> "default")).isEqualTo("10");
+    }
+
+    @Test
+    public void orElse() {
+        assertThat(left("fault").orElse(() -> right("default"))).isEqualTo(right("default"));
+        assertThat(right("10").orElse(() -> right("default"))).isEqualTo(right("10"));
+    }
 }
