@@ -28,7 +28,6 @@ public class OptionTest {
         assertThat(Option.<Integer>none().filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(5).filter(i -> i % 2 == 0)).isEqualTo(none());
         assertThat(some(10).filter(i -> i % 2 == 0)).isEqualTo(some(10));
-        throw new NumberFormatException();
     }
 
     @Test
