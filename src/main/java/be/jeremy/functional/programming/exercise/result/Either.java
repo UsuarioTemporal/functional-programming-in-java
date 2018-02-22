@@ -39,12 +39,6 @@ public abstract class Either<Error, Success> {
         }
 
         @Override
-        public int hashCode() {
-
-            return Objects.hash(value);
-        }
-
-        @Override
         public <V> Either<Error, V> map(Function<Success, V> f) {
             return new Left<>(value);
         }
