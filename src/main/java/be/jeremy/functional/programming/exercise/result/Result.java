@@ -13,15 +13,19 @@ import java.util.function.Supplier;
 public abstract class Result<V> {
 
     public Result<V> orElse(Supplier<Result<V>> defaultValue) {
-        return  map(s -> this).getOrElse(defaultValue);
+        return map(s -> this).getOrElse(defaultValue);
     }
 
     public abstract V getOrElse(final V defaultValue);
+
     public abstract V getOrElse(final Supplier<V> defaultValue);
+
     public abstract <U> Result<U> map(Function<V, U> f);
+
     public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
 
-    private Result() {}
+    private Result() {
+    }
 
     public static class Failure<V> extends Result<V> {
 
@@ -98,12 +102,20 @@ public abstract class Result<V> {
 
         @Override
         public <U> Result<U> map(Function<V, U> f) {
-            return new Success<>(f.apply(value));
+            try {
+                return success(f.apply(value));
+            } catch (Exception e) {
+                return failure(e.getMessage());
+            }
         }
 
         @Override
         public <U> Result<U> flatMap(Function<V, Result<U>> f) {
-            return f.apply(value);
+            try {
+                return f.apply(value);
+            } catch (Exception e) {
+                return failure(e.getMessage());
+            }
         }
 
         @Override

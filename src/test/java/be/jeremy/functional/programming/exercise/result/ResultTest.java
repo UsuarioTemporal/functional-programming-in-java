@@ -32,7 +32,8 @@ public class ResultTest {
         Result<?> fault = failure("fault");
 
         assertThat(fault.map(Object::toString)).isEqualTo(fault);
-        assertThat(right(10L).map(Object::toString)).isEqualTo(right("10"));
+        assertThat(success(10L).map(Object::toString)).isEqualTo(success("10"));
+        assertThat(success(10L).map(v -> {throw new RuntimeException();})).isExactlyInstanceOf(Result.Failure.class);
     }
 
     @Test
@@ -41,6 +42,7 @@ public class ResultTest {
 
         assertThat(fault.flatMap(e -> success("10"))).isEqualTo(fault);
         assertThat(success(10L).flatMap(e -> success("10"))).isEqualTo(success("10"));
+        assertThat(success(10L).flatMap(r -> {throw new RuntimeException();})).isExactlyInstanceOf(Result.Failure.class);
     }
 
 }
